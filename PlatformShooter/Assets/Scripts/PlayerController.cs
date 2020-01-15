@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class PlayerController: MonoBehaviour
 {
-    bool isGrounded = true;
     public Rigidbody RB;
     private Vector3 movement;
-    private bool canJump;
     public float Speed; 
-    public float jumpForce;
     public float GravityScale;
     public new Camera camera;
 
@@ -21,18 +18,13 @@ public class PlayerController: MonoBehaviour
     private void Update()
     {
         movement = new Vector3(Input.GetAxis("Horizontal"), movement.y, Input.GetAxis("Vertical"));
-        if(isGrounded == true)
-        {
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-            {
-                RB.velocity = new Vector3(movement.x, jumpForce, movement.z);
-            }
-        }
     }
     private void FixedUpdate()
     {
         moveCharacter(movement);
     }
+
+
     void moveCharacter(Vector3 direction)
     {
         //reading the input:
