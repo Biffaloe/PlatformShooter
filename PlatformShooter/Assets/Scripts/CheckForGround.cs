@@ -5,9 +5,10 @@ using UnityEngine;
 public class CheckForGround : MonoBehaviour {
     public Rigidbody RB;
     public float jumpForce;
-    public bool isGrounded;
-    public float hitDistance;
     public LayerMask layer;
+
+    private bool isGrounded;    
+    private float hitDistance;
 
 	void Start ()
     {
