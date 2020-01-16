@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class PlayerController: MonoBehaviour
 {
-    public Rigidbody RB;
     private Vector3 movement;
     public float Speed; 
     public float GravityScale;
     public new Camera camera;
+    public float jumpForce;
+    public LayerMask layer;
 
+    private bool isGrounded;
+    private float hitDistance;
 
-	void Start ()
-    {
-        RB = GetComponent<Rigidbody>();
-	}
     private void Update()
     {
         movement = new Vector3(Input.GetAxis("Horizontal"), movement.y, Input.GetAxis("Vertical"));
@@ -22,8 +21,22 @@ public class PlayerController: MonoBehaviour
     private void FixedUpdate()
     {
         moveCharacter(movement);
+        UpdateStats();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            if (isGrounded)
+                this.GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0));
     }
 
+
+
+
+    public void UpdateStats()
+    {
+        hitDistance = isGrounded ? 0.45f : 0.35f;
+        Debug.DrawRay(transform.position, Vector3.down, Color.red);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, hitDistance, layer);
+    }
 
     void moveCharacter(Vector3 direction)
     {
@@ -45,6 +58,6 @@ public class PlayerController: MonoBehaviour
         var desiredMoveDirection = forward * verticalAxis + right * horizontalAxis;
 
         //now we can apply the movement:
-        RB.MovePosition((Vector3)transform.position + (desiredMoveDirection * Speed * Time.deltaTime));
+        this.GetComponent<Rigidbody>().MovePosition((Vector3)transform.position + (desiredMoveDirection * Speed * Time.deltaTime));
     }
 }

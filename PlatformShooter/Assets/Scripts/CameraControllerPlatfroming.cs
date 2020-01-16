@@ -26,6 +26,11 @@ public class CameraControllerPlatfroming : MonoBehaviour {
 	
 	void LateUpdate ()
     {
+        CameraTurn();
+	}
+
+    void CameraTurn()
+    {
         //get x and y pos of the mouse and rotate the target
         float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
         target.Rotate(0, horizontal, 0);
@@ -40,7 +45,7 @@ public class CameraControllerPlatfroming : MonoBehaviour {
         if (pivot.rotation.eulerAngles.x > MaxViewAngle && pivot.rotation.eulerAngles.x < 180f)
             pivot.rotation = Quaternion.Euler(MaxViewAngle, 0, 0);
         if (pivot.rotation.eulerAngles.x > 180f && pivot.rotation.eulerAngles.x < (360 + MinViewAngle))
-            pivot.rotation = Quaternion.Euler((360f + MinViewAngle),0,0);
+            pivot.rotation = Quaternion.Euler((360f + MinViewAngle), 0, 0);
 
 
 
@@ -58,5 +63,5 @@ public class CameraControllerPlatfroming : MonoBehaviour {
 
         //transform.position = target.position - offset;
         transform.LookAt(target);
-	}
+    }
 }
