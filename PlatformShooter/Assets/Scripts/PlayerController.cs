@@ -10,6 +10,7 @@ public class PlayerController: MonoBehaviour
     public new Camera camera;
     public float jumpForce;
     public LayerMask layer;
+    CameraControllerPlatfroming cameraController;
 
     private bool isGrounded;
     private float hitDistance;
@@ -22,14 +23,8 @@ public class PlayerController: MonoBehaviour
     {
         moveCharacter(movement);
         UpdateStats();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            if (isGrounded)
-                this.GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+        Jumps();
     }
-
-
-
 
     public void UpdateStats()
     {
@@ -59,5 +54,13 @@ public class PlayerController: MonoBehaviour
 
         //now we can apply the movement:
         this.GetComponent<Rigidbody>().MovePosition((Vector3)transform.position + (desiredMoveDirection * Speed * Time.deltaTime));
+    }
+
+    void Jumps()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            if (isGrounded)
+                this.GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+
     }
 }

@@ -2,16 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraControllerPlatfroming : MonoBehaviour {
+public class CameraControllerPlatfroming : MonoBehaviour
+{
 
     public Transform target;
+    public Transform pivot;
+
+    Collider enemyTarget;
+
     public Vector3 offset;
+
     public bool InvertY;
     public bool usedOffsetValues;
+    bool lockedOn;
+
+    public float lockOnRange;
+    public float followDistance;
+    public float followHeight;
     public float MaxViewAngle;
     public float MinViewAngle;
     public float rotateSpeed;
-    public Transform pivot;
 
 	void Start ()
     {
@@ -26,7 +36,16 @@ public class CameraControllerPlatfroming : MonoBehaviour {
 	
 	void LateUpdate ()
     {
-        CameraTurn();
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            lockedOn = true;
+            CameraLockon();
+        }
+        else
+        {
+            lockedOn = false;
+            CameraTurn();
+        }
 	}
 
     void CameraTurn()
@@ -63,5 +82,62 @@ public class CameraControllerPlatfroming : MonoBehaviour {
 
         //transform.position = target.position - offset;
         transform.LookAt(target);
+    }
+
+    void CameraLockon()
+    {
+        FindClosestEnemy();
+
+        if (target != null)
+        {
+            Vector3 newPos = target.position + (-target.transform.forward * followDistance);
+            newPos.y += followHeight;
+            transform.position = newPos;
+        }
+        if (enemyTarget != null)
+        {
+            gameObject.transform.LookAt(enemyTarget.transform);
+            target.LookAt(new Vector3(enemyTarget.transform.localPosition.x, 0, enemyTarget.transform.localPosition.z));
+        }
+        else if (enemyTarget != null)
+        {
+            Vector3 pos1 = target.transform.position;
+            Vector3 pos2 = enemyTarget.transform.position;
+            Vector3 dir = (pos2 - pos1).normalized;
+            Vector3 perpDir = Vector3.Cross(dir, Vector3.right);
+            Vector3 midPoint = (pos1 + pos2) / 2f;
+            gameObject.transform.LookAt(midPoint);
+        }
+    }
+
+    void FindClosestEnemy()
+    {
+        int numEnemies = 0;
+        var hitColliders = Physics.OverlapSphere(transform.position, lockOnRange);
+        foreach (var hit in hitColliders)
+        {
+            if (!hit || hit.gameObject == this.gameObject || hit.gameObject.tag == this.gameObject.tag)
+            {
+                continue;
+            }
+            if (hit.tag != "Enemy") 
+                continue;
+            var relativePoint = Camera.main.transform.InverseTransformPoint(hit.transform.position);
+            if (relativePoint.z < 0)
+            {
+                continue;
+            }
+            numEnemies += 1;
+            if (enemyTarget == null)
+            {
+                print("TARGET FOUND");
+                enemyTarget = hit;
+            }
+        }
+        if (numEnemies < 1)
+        {
+            lockedOn = false;
+            enemyTarget = null;
+        }
     }
 }

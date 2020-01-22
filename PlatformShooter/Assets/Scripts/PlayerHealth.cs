@@ -31,7 +31,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         healthSlider.value = currentHealth;
 
-        playerAudio.Play();
+        //playerAudio.Play();
 
         if(currentHealth <=0 && !isDead)
         {
