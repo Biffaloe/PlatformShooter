@@ -14,7 +14,7 @@ public class CameraControllerPlatfroming : MonoBehaviour
 
     public bool InvertY;
     public bool usedOffsetValues;
-    bool lockedOn;
+    public bool lockedOn;
 
     public float lockOnRange;
     public float followDistance;
@@ -36,10 +36,14 @@ public class CameraControllerPlatfroming : MonoBehaviour
 	
 	void LateUpdate ()
     {
-        if (Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetButton("Fire2"))
         {
             lockedOn = true;
             CameraLockon();
+        }
+        else if (Input.GetButtonUp("Fire2"))
+        {
+            target.transform.eulerAngles = new Vector3(0,0,target.transform.eulerAngles.z);
         }
         else
         {
@@ -97,7 +101,8 @@ public class CameraControllerPlatfroming : MonoBehaviour
         if (enemyTarget != null)
         {
             gameObject.transform.LookAt(enemyTarget.transform);
-            target.LookAt(new Vector3(enemyTarget.transform.localPosition.x, 0, enemyTarget.transform.localPosition.z));
+            target.LookAt(enemyTarget.transform);
+            //target.LookAt(new Vector3(enemyTarget.transform.localPosition.x, enemyTarget.transform.localPosition.y, enemyTarget.transform.localPosition.z));
         }
         else if (enemyTarget != null)
         {

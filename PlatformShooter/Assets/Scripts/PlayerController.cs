@@ -5,12 +5,15 @@ using UnityEngine;
 public class PlayerController: MonoBehaviour
 {
     private Vector3 movement;
+    private bool canJump;
+
     public float Speed; 
     public float GravityScale;
-    public new Camera camera;
     public float jumpForce;
+    public new Camera camera;
     public LayerMask layer;
     CameraControllerPlatfroming cameraController;
+    
 
     private bool isGrounded;
     private float hitDistance;
@@ -24,13 +27,6 @@ public class PlayerController: MonoBehaviour
         moveCharacter(movement);
         UpdateStats();
         Jumps();
-    }
-
-    public void UpdateStats()
-    {
-        hitDistance = isGrounded ? 0.45f : 0.35f;
-        Debug.DrawRay(transform.position, Vector3.down, Color.red);
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, hitDistance, layer);
     }
 
     void moveCharacter(Vector3 direction)
@@ -58,9 +54,33 @@ public class PlayerController: MonoBehaviour
 
     void Jumps()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Jump"))
             if (isGrounded)
-                this.GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+            {
+                this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                this.GetComponent<Rigidbody>().AddForce(new Vector3(0, jumpForce, 0), ForceMode.VelocityChange);
+            }
+    }
+ 
+    public void UpdateStats()
+    {
+       isGrounded = Physics.Raycast(transform.position, Vector3.down, hitDistance, layer);
+       hitDistance = isGrounded ? 0.40f : 0.35f;
+       Debug.DrawRay(transform.position, new Vector3(0,0.40f,0), Color.red);
+    }
 
+    void LockonJumps()
+    {
+        if (cameraController.lockedOn)
+        {
+            if (isGrounded)
+            {
+                
+                if (Input.GetButtonDown("Jump") && Input.GetKeyDown(KeyCode.A))
+                    this.GetComponent<Rigidbody>().AddForce(new Vector3((jumpForce), jumpForce - (jumpForce / 2), 0), ForceMode.VelocityChange);
+                if (Input.GetButtonDown("Jump") && Input.GetKeyDown(KeyCode.D))
+                    this.GetComponent<Rigidbody>().AddForce(new Vector3(-(jumpForce), jumpForce - (jumpForce / 2), 0), ForceMode.VelocityChange);
+            }
+        }
     }
 }
