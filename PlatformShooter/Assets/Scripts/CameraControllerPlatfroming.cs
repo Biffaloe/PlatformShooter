@@ -84,7 +84,6 @@ public class CameraControllerPlatfroming : MonoBehaviour
             transform.position = new Vector3(transform.position.x, target.position.y, transform.position.z);
         }
 
-        //transform.position = target.position - offset;
         transform.LookAt(target);
     }
 
@@ -102,14 +101,12 @@ public class CameraControllerPlatfroming : MonoBehaviour
         {
             gameObject.transform.LookAt(enemyTarget.transform);
             target.LookAt(enemyTarget.transform);
-            //target.LookAt(new Vector3(enemyTarget.transform.localPosition.x, enemyTarget.transform.localPosition.y, enemyTarget.transform.localPosition.z));
         }
-        else if (enemyTarget != null)
+        else if (enemyTarget = null)
         {
             Vector3 pos1 = target.transform.position;
             Vector3 pos2 = enemyTarget.transform.position;
             Vector3 dir = (pos2 - pos1).normalized;
-            Vector3 perpDir = Vector3.Cross(dir, Vector3.right);
             Vector3 midPoint = (pos1 + pos2) / 2f;
             gameObject.transform.LookAt(midPoint);
         }
