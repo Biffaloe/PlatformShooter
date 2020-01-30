@@ -8,7 +8,7 @@ public class EnemyHealth : MonoBehaviour
     public int currentHealth;
     public int scoreValue = 10;
 
-    bool isDead;
+    public bool isDead;
     SphereCollider sphereCollider;
 
     void Awake()
@@ -20,8 +20,10 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage ( int amount)
     {
         if (isDead)
+        {
+            Destroy(this.gameObject);
             return;
-
+        }
         currentHealth -= amount;
 
         if(currentHealth <= 0)
@@ -34,10 +36,5 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true;
         sphereCollider.isTrigger = true;
-    }
-
-    public void DestroyObject()
-    {
-        Destroy(gameObject);
     }
 }

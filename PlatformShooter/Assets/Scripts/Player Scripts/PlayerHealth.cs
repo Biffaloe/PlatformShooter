@@ -8,11 +8,8 @@ public class PlayerHealth : MonoBehaviour
     public int startingHealth = 100;
     public int currentHealth;
     public Slider healthSlider;
-    public AudioClip deathClip;
 
-    //AudioSource playerAudio;
     PlayerController playerController;
-    CameraControllerPlatfroming cameraControllerPlatfroming;
 
     bool isDead;
     bool damaged;
@@ -30,7 +27,6 @@ public class PlayerHealth : MonoBehaviour
         currentHealth -= amount;
         healthSlider.value = currentHealth;
 
-        //playerAudio.Play();
 
         if(currentHealth <=0 && !isDead)
         {
@@ -42,10 +38,10 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
 
-        //playerAudio.clip = deathClip;
-        //playerAudio.Play();
+        var playerController = this.GetComponentInParent<PlayerController>();
+        var meshrender = this.GetComponentInParent<MeshRenderer>();
 
+        meshrender.enabled = false;
         playerController.enabled = false;
-        cameraControllerPlatfroming.enabled = false;
     }
 }

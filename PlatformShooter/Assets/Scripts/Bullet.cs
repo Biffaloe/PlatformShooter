@@ -9,13 +9,6 @@ public class Bullet : MonoBehaviour
     float timer;
     float timeLimit = 2.0f;
 
-    EnemyHealth enemyHealth;
-
-    private void Awake()
-    {
-        enemyHealth = GetComponent<EnemyHealth>();
-    }
-
     void Update() 
 	{
         timer += Time.deltaTime;
@@ -28,15 +21,8 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        var enemyHealth = other.GetComponentInParent<EnemyHealth>();
         if (other.tag == "Enemy")
-        {
-            Attack();
-        }
-    }
-
-    void Attack()
-    {
-        if (enemyHealth.currentHealth > 0)
         {
             enemyHealth.TakeDamage(attackDamage);
         }
