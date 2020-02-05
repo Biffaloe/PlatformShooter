@@ -21,6 +21,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead)
         {
+            ScoreCounter.score += scoreValue;
             Destroy(this.gameObject);
             return;
         }

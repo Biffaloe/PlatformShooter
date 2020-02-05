@@ -5,23 +5,19 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
-    public Text myText;
-    private int score;
+    public static int score;
 
-	void Start ()
+    Text text;
+
+	void Awake ()
     {
+        text = GetComponent<Text>();
         score = 0;
-        myText.text = "Score: 0";
 	}
 	
 
 	void Update ()
     {
-        var enemyHealth = this.GetComponentInParent<EnemyHealth>();
-
-        if (enemyHealth.isDead)
-            score += 10;
-
-        myText.text = "Score: " + score;
+        text.text = "Score: " + score;
     }
 }

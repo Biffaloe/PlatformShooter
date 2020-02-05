@@ -11,10 +11,12 @@ public class PlayerShoot : MonoBehaviour
     float timer;
 	float effectsDisplayTime = 0.2f;
 	Light gunLight;
+    AudioSource gunShot;
 
 	void Awake ()
 	{
 		gunLight = GetComponent<Light> ();
+        gunShot = GetComponent<AudioSource>();
 	}
 
 	void Update()
@@ -24,6 +26,7 @@ public class PlayerShoot : MonoBehaviour
 		if(Input.GetButton("Fire1") && timer >= timeBetweenBullets)
 		{
 			shootBullet();
+            gunShot.Play();
 		}
 
 		if (timer >= timeBetweenBullets * effectsDisplayTime){

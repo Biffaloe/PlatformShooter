@@ -102,7 +102,7 @@ public class CameraControllerPlatfroming : MonoBehaviour
             gameObject.transform.LookAt(enemyTarget.transform);
             target.LookAt(enemyTarget.transform);
         }
-        else if (enemyTarget = null)
+        else if (enemyTarget == null)
         {
             Vector3 pos1 = target.transform.position;
             Vector3 pos2 = enemyTarget.transform.position;

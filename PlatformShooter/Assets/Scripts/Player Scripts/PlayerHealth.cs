@@ -8,17 +8,39 @@ public class PlayerHealth : MonoBehaviour
     public int startingHealth = 100;
     public int currentHealth;
     public Slider healthSlider;
-
-    PlayerController playerController;
+    public Image damageImage;
+    public Color flashColor = new Color(1f, 0f, 0f, 0.1f);
 
     bool isDead;
     bool damaged;
+    AudioSource hurt;
 
+    CameraControllerPlatfroming cameraController;
+    GameObject mainCamera;
+
+    private void Start()
+    {
+        hurt = GetComponent<AudioSource>();
+        mainCamera = GameObject.Find("Main Camera");
+        cameraController = mainCamera.GetComponent<CameraControllerPlatfroming>();
+    }
     private void Awake()
     {
-        playerController = GetComponent<PlayerController>();
         currentHealth = startingHealth;
         isDead = false;
+    }
+
+    private void Update()
+    {
+        if (damaged)
+        {
+            damageImage.color = flashColor;
+        }
+        else
+        {
+            damageImage.color = Color.Lerp(damageImage.color, Color.clear, 2 * Time.deltaTime);
+        }
+        damaged = false;
     }
 
     public void TakeDamage (int amount)
@@ -26,6 +48,7 @@ public class PlayerHealth : MonoBehaviour
         damaged = true;
         currentHealth -= amount;
         healthSlider.value = currentHealth;
+        hurt.Play();
 
 
         if(currentHealth <=0 && !isDead)
@@ -43,5 +66,6 @@ public class PlayerHealth : MonoBehaviour
 
         meshrender.enabled = false;
         playerController.enabled = false;
+        cameraController.enabled = false;
     }
 }

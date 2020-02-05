@@ -12,12 +12,18 @@ public class PlayerController: MonoBehaviour
     public float jumpForce;
     public new Camera camera;
     public LayerMask layer;
-    CameraControllerPlatfroming cameraController;
     
-
     private bool isGrounded;
     private float hitDistance;
 
+    CameraControllerPlatfroming cameraController;
+    GameObject mainCamera;
+
+    private void Start()
+    {
+        mainCamera = GameObject.Find("Main Camera");
+        cameraController = mainCamera.GetComponent<CameraControllerPlatfroming>();
+    }
     private void Update()
     {
         movement = new Vector3(Input.GetAxis("Horizontal"), movement.y, Input.GetAxis("Vertical"));
